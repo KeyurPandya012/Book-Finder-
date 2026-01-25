@@ -1,0 +1,9 @@
+@echo off
+echo Starting BookFinder API...
+echo Installing dependencies if needed...
+pip install -r requirements.txt
+echo initializing database and running ingestion (in background if server running)...
+start "BookFinder API" python run.py
+echo Application started at http://127.0.0.1:8000/docs
+echo To ingest data, use the POST /sync endpoint or run: python scripts/ingest.py
+pause
