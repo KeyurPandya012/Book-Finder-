@@ -1,5 +1,5 @@
 #  BookFinder: Ultimate Technical Dossier
-### DS-614 Big Data Engineering Project | Group 4
+### DS-614 Big Data Engineering Project | Team_VK
 
 **BookFinder** is a state-of-the-art Big Data ecosystem designed to ingest, clean, enrich, and serve a massive dataset of 32,400+ books. This project represents a complete data engineering lifecycle—from raw, noisy CSV files to a high-concurrency, professional-grade REST API.
 
