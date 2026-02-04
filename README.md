@@ -112,15 +112,16 @@ The project is fully containerized for "One-Click" deployment.
 - **[docker-compose.yml]**: Orchestrates the FastAPI web service and ensures the SQLite database is persisted.
 - **Usage**: `docker-compose up --build`
 
-###  2. Cloud Hosting (AWS)
-Detailed instructions for hosting on a public URL via **AWS App Runner** are provided in **[AWS_DEPLOY.md]**. 
-- **Memory Optimization**: The recommender uses an optimized "on-the-fly" similarity calculation to run smoothly on AWS instances with only 2GB RAM.
+###  2. Cloud Hosting (Render.com - 100% Free)
+Detailed instructions for hosting on a public URL via **Render** are provided in **[RENDER_DEPLOY.md]**. 
+- **Efficiency**: The recommender uses an optimized "on-the-fly" similarity calculation to run smoothly on Render's free tier.
+- **Auto-Sync**: Connects directly to your GitHub for automatic deployments.
 
 ---
 
 ##  Master Documentation Links
 - **[DOCKER.md]**: Local container setup and troubleshooting.
-- **[AWS_DEPLOY.md]**: Step-by-step guide for hosting on the public cloud.
+- **[RENDER_DEPLOY.md]**: Step-by-step guide for hosting for free on the cloud.
 
 ---
 *Created for the DS-614 Big Data Engineering Course | Final Submission.*

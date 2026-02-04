@@ -58,13 +58,13 @@ This document tracks the evolution of the **BookFinder** project through the cor
 
 ---
 
-##  Phase 6: Infrastructure & Public Hosting
+##  Phase 6: Infrastructure & Public Hosting (Free Tier)
 
 ### **Prompt 12: Containerization & Cloud Strategy**
-> *"Set up the project for easy deployment. Create a Dockerfile and docker-compose.yml for local use. Also, provide a step-by-step guide for hosting the recommender on a public URL via AWS."*
+> *"Set up the project for easy deployment. Create a Dockerfile and docker-compose.yml for local use. Provide a step-by-step guide for hosting the recommender for free using Render.com."*
 
 ### **Prompt 13: Memory Engineering (The Fix)**
-> *"Docker is crashing with exit code 137. This is a memory issue. Optimize the recommendation engine to use less RAM by calculating similarity on-the-fly instead of pre-calculating a massive matrix. Ensure it works on low-resource cloud instances (2GB RAM)."*
+> *"Ensure the app works on low-resource free cloud instances (512MB RAM). Optimize the recommendation engine to use less RAM by calculating similarity on-the-fly instead of pre-calculating a massive matrix."*
 
 ### **Prompt 14: Production Finalization**
 > *"Finalize the Master README with the new Team_VK name. Include real-world production statistics: how many raw books were cleaned, how many duplicates were removed, and the final count of enriched books in the database."*

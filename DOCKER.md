@@ -25,7 +25,7 @@ This project is fully containerized for easy setup and deployment.
    ```
 
 ## Production Hosting
-To host the recommender on a public URL (e.g., DigitalOcean, AWS, or Render):
+To host the recommender on a public URL (e.g., Render or DigitalOcean):
 
 1. **Push to GitHub**: Upload your code to a repository.
 2. **Deploy Container**: Most cloud providers allow you to "Deploy from Repo."
