@@ -11,7 +11,7 @@ This document tracks the evolution of the **BookFinder** project through the cor
 > *"I want to develop a complete and runnable 'BookFinder' project. Use the provided 'BookFinder.pdf' to understand the requirements. We need a robust data pipeline to extract, clean, and store book information from `RC_BOOK_ISBN.csv` into a SQLite database using FastAPI for the backend."*
 
 ### **Prompt 2: Data Sanitation**
-> *"The raw CSV has duplicates and formatting issues. Create a cleaning script that deduplicates the ISBNs and prepares the data for high-concurrency ingestion. Ensure the database stores ISBN, Title, and Author safely."*
+> *"The raw CSV has duplicates and formatting issues. Create a cleaning script that deduplicated the ISBNs and prepares the data for high-concurrency ingestion. Ensure the database stores ISBN, Title, and Author safely."*
 
 ---
 
@@ -44,3 +44,30 @@ This document tracks the evolution of the **BookFinder** project through the cor
 > *"Make a fantastic and perfect README.md file. Include a technical glossary of every file in the project and the 'engineering knowledge' associated with each one. Also, provide this Logbase file of all the prompts used."*
 
 ---
+
+##  Phase 5: UI/UX & AI Re-Expansion (The Comeback)
+
+### **Prompt 9: Premium UI/UX Restoration**
+> *"I have decided to bring back the UI and make it even better. Enhance the BookFinder UI with a modern glassmorphism design. Implement dedicated sections for Author Discovery and Similarity Explorer in a tabbed interface. It should feel premium and interactive."*
+
+### **Prompt 10: Intelligence Upgrade**
+> *"Upgrade the recommendation engine to support book-to-book similarity and author-based recommendations. Ensure the results are shown seamlessly in the new UI grid and detail modals."*
+
+### **Prompt 11: ISBN Personalization**
+> *"Modify the Similarity Explorer to be a dedicated ISBN Finder. When I enter an ISBN, show only that specific book in the grid, but keep the similarity logic accessible in the 'View Details' section."*
+
+---
+
+##  Phase 6: Infrastructure & Public Hosting
+
+### **Prompt 12: Containerization & Cloud Strategy**
+> *"Set up the project for easy deployment. Create a Dockerfile and docker-compose.yml for local use. Also, provide a step-by-step guide for hosting the recommender on a public URL via AWS."*
+
+### **Prompt 13: Memory Engineering (The Fix)**
+> *"Docker is crashing with exit code 137. This is a memory issue. Optimize the recommendation engine to use less RAM by calculating similarity on-the-fly instead of pre-calculating a massive matrix. Ensure it works on low-resource cloud instances (2GB RAM)."*
+
+### **Prompt 14: Production Finalization**
+> *"Finalize the Master README with the new Team_VK name. Include real-world production statistics: how many raw books were cleaned, how many duplicates were removed, and the final count of enriched books in the database."*
+
+---
+*Last Updated: February 2026*

@@ -3,7 +3,7 @@ import sqlite3
 try:
     conn = sqlite3.connect('books.db')
     cursor = conn.cursor()
-
+    # Check if we already have data
     cursor.execute("SELECT count(*) FROM books")
     count = cursor.fetchone()[0]
     if count == 0:

@@ -4,9 +4,9 @@ from typing import List, Optional
 DB_NAME = "books.db"
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_NAME, timeout=10) 
+    conn = sqlite3.connect(DB_NAME, timeout=10) # Increased timeout
     conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL") 
+    conn.execute("PRAGMA journal_mode=WAL") # Enable WAL mode for concurrency
     return conn
 
 def init_db():

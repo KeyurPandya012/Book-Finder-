@@ -67,11 +67,60 @@ python scripts/clean_csv.py
 python scripts/ingest.py --threads 60
 ```
 
-### 3. Start API
-```bash
-run.bat
-# Visit: http://127.0.0.1:8000/docs
-```
+---
+
+##  Phase 2: AI Discovery & Intelligence (The Recommender)
+
+The second phase transformed the project from a static API into a **Bibliotherapy Dashboard**, featuring a premium glassmorphism UI.
+
+###  1. Discovery Ecosystem
+| Feature | Technical Implementation |
+| :--- | :--- |
+| **Mood Search** | Uses **TF-IDF (Term Frequency-Inverse Document Frequency)** to analyze natural language queries. It matches the "emotional context" of your mood to book descriptions. |
+| **Author Discovery** | A specialized filter that performs lightning-fast substring matching across 29,000+ records to find every work by a specific creator. |
+| **ISBN Finder** | A direct-lookup tool for precise retrieval. It acts as the entry point for deep-diving into individual book analytics. |
+| **Similarity Explorer** | Found within the "View Details" modal. It calculates **Cosine Similarity** on-the-fly to suggest "Kindred Books" based on content overlap. |
+
+###  2. UI/UX Architecture (`app/static/`)
+- **[index.html]**: A single-page application (SPA) built with vanilla JS and CSS.
+- **Glassmorphism**: Uses `backdrop-filter: blur` and radial gradients for a modern, "premium" feel.
+- **Staggered Animations**: CSS `@keyframes` and dynamic delay logic ensure books "float" into view.
 
 ---
-*Created for the DS-614 Big Data Engineering Course.*
+
+##  Data Engineering Statistics (The Results)
+
+The pipeline successfully processed and enriched the 36k record dataset with the following results:
+
+| Stage | Metric | Count |
+| :--- | :--- | :--- |
+| **Raw Ingestion** | Total records in `RC_BOOK_ISBN.csv` | **36,360** |
+| **Data Cleaning** | Valid unique books after deduplication | **31,477** |
+| **AI Enrichment** | Books with descriptions fetched & verified | **29,256** |
+| **API Readiness** | Total enriched records in `books.db` | **29,256** |
+
+> [!NOTE]
+> 100% of the books serveed via the API now contain enriched metadata and descriptions, compared to 0% in the original raw file.
+
+---
+
+##  Premium Deployment & Infrastructure
+
+###  1. Dockerization
+The project is fully containerized for "One-Click" deployment.
+- **[Dockerfile]**: A multi-stage build that keeps the image size small.
+- **[docker-compose.yml]**: Orchestrates the FastAPI web service and ensures the SQLite database is persisted.
+- **Usage**: `docker-compose up --build`
+
+###  2. Cloud Hosting (AWS)
+Detailed instructions for hosting on a public URL via **AWS App Runner** are provided in **[AWS_DEPLOY.md]**. 
+- **Memory Optimization**: The recommender uses an optimized "on-the-fly" similarity calculation to run smoothly on AWS instances with only 2GB RAM.
+
+---
+
+##  Master Documentation Links
+- **[DOCKER.md]**: Local container setup and troubleshooting.
+- **[AWS_DEPLOY.md]**: Step-by-step guide for hosting on the public cloud.
+
+---
+*Created for the DS-614 Big Data Engineering Course | Final Submission.*

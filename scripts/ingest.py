@@ -9,6 +9,7 @@ import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 
+# Add parent directory to path to import app modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app.database import get_db_connection, init_db
 
@@ -32,10 +33,10 @@ def clean_description(desc):
     if not desc: return None
     if isinstance(desc, dict): desc = desc.get('value', '')
     if not isinstance(desc, str): return None
-
+    # Basic cleaning
     clean = re.sub('<.*?>', '', desc)
     clean = clean.replace('&amp;', '&').replace('&quot;', '"').replace('&lt;', '<').replace('&gt;', '>')
-   
+    # Remove excessive whitespace
     clean = re.sub(r'\s+', ' ', clean).strip()
     return clean if len(clean) > 20 else None
 
@@ -47,7 +48,7 @@ def get_with_retry(url, timeout=5, retries=2):
             if resp.status_code == 200:
                 return resp
             if resp.status_code == 429:
-                time.sleep(2 * (i + 1)) 
+                time.sleep(2 * (i + 1)) # Wait longer for rate limits
         except:
             if i < retries:
                 time.sleep(1)
@@ -59,6 +60,7 @@ def fetch_details_ultimate(isbn, title, author):
     cover_image = ""
     result_title = title
 
+    # HELPER: Scan Google Books Items
     def scan_google(query, limit=3):
         nonlocal description, cover_image, result_title
         try:
@@ -79,9 +81,11 @@ def fetch_details_ultimate(isbn, title, author):
         except: pass
         return False
 
+    # Method 1: Google Books ISBN
     if isbn and not str(isbn).startswith("N/A"):
         if scan_google(f"isbn:{isbn}"): pass
 
+    # Method 2: OpenLibrary ISBN
     if not description and isbn and not str(isbn).startswith("N/A"):
         try:
             url = f"{OPENLIBRARY_API_BASE}?bibkeys=ISBN:{isbn}&jscmd=details&format=json"
@@ -101,6 +105,7 @@ def fetch_details_ultimate(isbn, title, author):
                             description = clean_description(w_resp.json().get('description'))
         except: pass
 
+    # Method 3: Google Books Title + Author
     if not description:
         query = f"intitle:{title}"
         if author and not pd.isna(author):
@@ -108,9 +113,11 @@ def fetch_details_ultimate(isbn, title, author):
             query += f" inauthor:{safe_author}"
         scan_google(query, limit=3)
 
+    # Method 4: Google Books Title ONLY (Broad)
     if not description:
         scan_google(title, limit=3)
 
+    # Method 5: OpenLibrary Title Search (Multi-doc)
     if not description:
         try:
             encoded_title = urllib.parse.quote(title)

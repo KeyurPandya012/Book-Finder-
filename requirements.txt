@@ -3,4 +3,4 @@ uvicorn
 pandas
 requests
 pydantic
-
+scikit-learn

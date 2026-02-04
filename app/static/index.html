@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookFinder | Premium Recommender</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.5);
+            --bg: #0f172a;
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #c084fc;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.15) 0px, transparent 50%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            margin-top: 10px;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: var(--glass);
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px var(--primary-glow);
+        }
+
+        .search-wrapper {
+            width: 90%;
+            max-width: 800px;
+            margin-bottom: 50px;
+        }
+
+        .search-container {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 10px;
+            border-radius: 20px;
+            display: none;
+            gap: 10px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-container.active {
+            display: flex;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            padding: 15px 25px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        input[type="text"]::placeholder {
+            color: #475569;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--primary-glow);
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--primary-glow);
+            filter: brightness(1.1);
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .btn-secondary {
+            background: rgba(51, 65, 85, 0.5);
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            padding: 0 20px 60px 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 320px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: #1e293b;
+            position: relative;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content h3 {
+            font-size: 1.25rem;
+            margin: 0 0 8px 0;
+            font-family: 'Outfit', sans-serif;
+            color: white;
+        }
+
+        .card-content .author {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .card-content .desc {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .year {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .btn-view {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .btn-view:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal {
+            background: var(--bg);
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-dim);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+        }
+
+        .detail-img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .similar-section {
+            margin-top: 40px;
+        }
+
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .small-card {
+            background: var(--glass);
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .small-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .small-card h4 {
+            font-size: 0.8rem;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: var(--primary);
+            border-radius: 50%;
+            display: none;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+            margin: 40px auto;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container.active {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>BookFinder</h1>
+        <p class="subtitle">AI-Powered Bibliotherapy & Discovery</p>
+    </header>
+
+    <div class="search-wrapper">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('mood')">✨ Mood Search</div>
+            <div class="tab" onclick="switchTab('author')">✍️ Author Discovery</div>
+            <div class="tab" onclick="switchTab('isbn')">🔍 ISBN Finder</div>
+        </div>
+
+        <div id="moodSearch" class="search-container active">
+            <input type="text" id="moodInput"
+                placeholder="How are you feeling? (e.g. 'I need a cozy mystery for a rainy day')">
+            <button class="btn-primary" onclick="getRecommendations()">Find Magic</button>
+        </div>
+
+        <div id="authorSearch" class="search-container">
+            <input type="text" id="authorInput" placeholder="Enter an author's name (e.g. 'Jane Austen')">
+            <button class="btn-primary" onclick="searchByAuthor()">Find Author</button>
+        </div>
+
+        <div id="isbnSearch" class="search-container">
+            <input type="text" id="isbnInput" placeholder="Enter a Book ISBN (e.g. '9780141439518')">
+            <button class="btn-primary" onclick="findBookByISBN()">Find Book</button>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="btn-secondary" onclick="loadBooks()">Explore All</button>
+        <button class="btn-secondary" onclick="syncData()" id="syncBtn">Refresh Database</button>
+    </div>
+
+    <div class="container">
+        <div id="statusBadge" class="status-badge">Ready</div>
+        <div class="loader" id="loader"></div>
+        <div class="grid" id="bookGrid">
+            <!-- Books will appear here -->
+        </div>
+    </div>
+
+    <!-- Book Detail Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalContent">
+                <!-- Content will be injected -->
+            </div>
+            <div class="similar-section">
+                <h3>Similar Recommendations</h3>
+                <div class="similar-grid" id="similarGrid">
+                    <!-- Similar books here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "";
+
+        function switchTab(tab) {
+            // Update tabs UI
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            const activeTab = document.querySelector(`.tab[onclick="switchTab('${tab}')"]`);
+            if (activeTab) activeTab.classList.add('active');
+
+            // Update containers
+            document.querySelectorAll('.search-container').forEach(c => c.classList.remove('active'));
+            document.getElementById(`${tab}Search`).classList.add('active');
+        }
+
+        async function getRecommendations() {
+            const mood = document.getElementById('moodInput').value;
+            if (!mood) return;
+
+            showLoader(true);
+            updateStatus(`Gleaning wisdom for: "${mood}"...`);
+
+            try {
+                const response = await fetch(`${API_URL}/recommend`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mood: mood })
+                });
+                const books = await response.json();
+                renderBooks(books);
+                updateStatus(`Found ${books.length} matches for you.`);
+            } catch (e) {
+                console.error(e);
+                updateStatus("Something went wrong. Please try again.");
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        async function searchByAuthor() {
+            const author = document.getElementById('authorInput').value;
+            if (!author) return;
+
+            showLoader(true);
+            updateStatus(`Finding books by: "${author}"...`);
+
+            try {
+                const response = await fetch(`${API_URL}/books/author/${encodeURIComponent(author)}`);
+                const books = await response.json();
+                renderBooks(books);
+                updateStatus(`Found ${books.length} books by ${author}.`);
+            } catch (e) {
+                console.error(e);
+                updateStatus("Failed to find books by this author.");
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        async function findBookByISBN() {
+            const isbn = document.getElementById('isbnInput').value.trim();
+            if (!isbn) return;
+
+            showLoader(true);
+            updateStatus(`Searching for ISBN: ${isbn}...`);
+
+            try {
+                const response = await fetch(`${API_URL}/books/${isbn}`);
+                if (!response.ok) throw new Error("Book not found.");
+
+                const book = await response.json();
+                renderBooks([book]); // Render just this one book
+                updateStatus(`Found: ${book.title}`);
+            } catch (e) {
+                console.error(e);
+                renderBooks([]);
+                updateStatus("Book not found. Please check the ISBN.");
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        async function loadBooks() {
+            showLoader(true);
+            updateStatus("Curating our collection...");
+            try {
+                const response = await fetch(`${API_URL}/books?limit=24`);
+                const books = await response.json();
+                renderBooks(books);
+                updateStatus("Showing our latest additions.");
+            } catch (e) {
+                updateStatus("Failed to load books.");
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        async function showBookDetail(isbn) {
+            updateStatus(`Fetching details for ${isbn}...`);
+            try {
+                const [bookRes, similarRes] = await Promise.all([
+                    fetch(`${API_URL}/books/${isbn}`),
+                    fetch(`${API_URL}/books/${isbn}/similar`)
+                ]);
+
+                const book = await bookRes.json();
+                const similar = await similarRes.json();
+
+                const content = `
+                    <div class="detail-grid">
+                        <img src="${book.cover_image || 'https://via.placeholder.com/300x450?text=No+Cover'}" class="detail-img">
+                        <div>
+                            <h2>${book.title}</h2>
+                            <p class="author">By ${book.author || 'Unknown'}</p>
+                            <p style="line-height: 1.8; color: var(--text-dim)">${book.description || 'No description available for this masterpiece.'}</p>
+                            <div style="margin-top: 20px;">
+                                <span style="background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 8px; font-size: 0.9rem;">ISBN: ${book.isbn}</span>
+                                <span style="margin-left: 10px; background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 8px; font-size: 0.9rem;">Released: ${book.publish_year || 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('modalContent').innerHTML = content;
+
+                const similarGrid = document.getElementById('similarGrid');
+                similarGrid.innerHTML = '';
+                similar.forEach(s => {
+                    const sCard = document.createElement('div');
+                    sCard.className = 'small-card';
+                    sCard.onclick = () => showBookDetail(s.isbn);
+                    sCard.innerHTML = `
+                        <img src="${s.cover_image || 'https://via.placeholder.com/150?text=No+Cover'}">
+                        <h4>${s.title}</h4>
+                    `;
+                    similarGrid.appendChild(sCard);
+                });
+
+                document.getElementById('modalOverlay').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function renderBooks(books) {
+            const grid = document.getElementById('bookGrid');
+            grid.innerHTML = '';
+
+            if (books.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px;">No books found. Try adjusting your search.</div>';
+                return;
+            }
+
+            books.forEach((book, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animation = `fadeInUp 0.5s ease-out forwards ${index * 0.05}s`;
+                card.style.opacity = 0;
+
+                const imgUrl = book.cover_image || 'https://via.placeholder.com/300x450?text=No+Cover';
+
+                card.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${imgUrl}" alt="${book.title}" loading="lazy">
+                    </div>
+                    <div class="card-content">
+                        <h3>${book.title}</h3>
+                        <p class="author">${book.author || 'Unknown Author'}</p>
+                        <p class="desc">${book.description || 'A journey waiting to be discovered.'}</p>
+                        <div class="card-footer">
+                            <span class="year">${book.publish_year || 'N/A'}</span>
+                            <button class="btn-view" onclick="showBookDetail('${book.isbn}')">View Details</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        async function syncData() {
+            const btn = document.getElementById('syncBtn');
+            btn.disabled = true;
+            updateStatus("Synchronizing with cosmic library...");
+            try {
+                await fetch(`${API_URL}/sync`, { method: 'POST' });
+                updateStatus("Sync started in background. Refreshing soon...");
+                setTimeout(loadBooks, 5000);
+            } catch (e) {
+                updateStatus("Sync failed.");
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function showLoader(show) {
+            document.getElementById('loader').style.display = show ? 'block' : 'none';
+        }
+
+        function updateStatus(msg) {
+            const badge = document.getElementById('statusBadge');
+            badge.textContent = msg;
+            badge.style.display = 'inline-block';
+        }
+
+        // Add CSS keyframe for fade in
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initial load
+        window.onload = loadBooks;
+    </script>
+</body>
+
+</html>

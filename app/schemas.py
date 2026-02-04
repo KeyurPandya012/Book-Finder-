@@ -15,4 +15,5 @@ class Book(BookBase):
     class Config:
         from_attributes = True
 
-
+class RecommendationRequest(BaseModel):
+    mood: str

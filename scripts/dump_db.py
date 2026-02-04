@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import sys
 
+# Ensure we can find the DB
 DB_PATH = "books.db"
 
 def show_all_data():
@@ -12,7 +13,7 @@ def show_all_data():
 
     conn = sqlite3.connect(DB_PATH)
     try:
-
+        # Read into pandas dataframe for nice printing
         df = pd.read_sql_query("SELECT id, isbn, title, substr(description, 1, 50) as desc_preview, publish_year FROM books", conn)
         
         if df.empty:
