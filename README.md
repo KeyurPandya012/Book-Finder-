@@ -134,4 +134,20 @@ Detailed instructions for hosting on a public URL via **Render** are provided in
 - **[RENDER_DEPLOY.md]**: Step-by-step guide for hosting for free on the cloud.
 
 ---
+
+##  Visual Gallery (System Demonstration)
+
+### 1. Mood-Based Discovery (DE.1)
+![Mood Search Interface](de.1.png)
+
+### 2. Interactive Book Details (DE.2)
+![Book Details Modal](de.2.png)
+
+### 3. Author Discovery Engine (AU.1)
+![Author Search Results](au.1.png)
+
+### 4. ISBN Precision Search (IS.1)
+![ISBN Finder Interface](is.1.png)
+
+---
 *Created for the DS-614 Big Data Engineering Course | Final Submission.*
