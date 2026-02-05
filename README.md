@@ -45,12 +45,22 @@ Below is the exhaustive map of every file in the project, including its technica
 
 ---
 
-##  Technical Workflow (How it all connects)
+---
 
-1.  **Cleaning**: `scripts/clean_csv.py` reads `RC_BOOK_ISBN.csv` and creates `cleaned_books.csv`.
-2.  **Ingestion**: `scripts/ingest.py` reads the cleaned CSV and launches 60 threads to fetch descriptions from Google Books/OpenLibrary, saving them to `books.db`.
-3.  **Serving**: `run.py` starts the FastAPI server (`app/main.py`).
-4.  **Retrieval**: The API (`crud.py`) fetches books from `books.db` and returns them as JSON validated by `schemas.py`.
+##  Quick-Start CLI (Management Tool)
+
+We have implemented a **Command Line Interface (CLI)** to manage the entire project easily. You can access it by running:
+
+```bash
+python manage.py //help
+```
+
+### Supported Commands:
+- `//help`: Show all available commands.
+- `run`: Start the API server.
+- `clean`: Trigger the data cleaning pipeline.
+- `ingest`: Start the high-concurrency ingestion engine.
+- `stats`: View real-time project and database statistics.
 
 ---
 
