@@ -5,6 +5,10 @@
 
 ---
 
+## Public URL for Book Finder 
+https://bookfinder-team-vk.onrender.com
+
+---
 ##  Comprehensive Project Knowledge & File Glossary
 
 Below is the exhaustive map of every file in the project, including its technical purpose and the engineering "knowledge" it contains.
@@ -151,7 +155,5 @@ Detailed instructions for hosting on a public URL via **Render** are provided in
 
 ---
 
-## Public URL for Book Finder 
-https://bookfinder-team-vk.onrender.com
 
 *Created for the DS-614 Big Data Engineering Course | Final Submission.*
